@@ -1,26 +1,16 @@
-﻿.summary {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    width: 1200px;
-    height: 500px;
-    background-color: red;
-}
-
-.summary-content {
+﻿.summary-fields {
     display: flex;
     flex-direction: row;
-    justify-content:center;
+    justify-content: center;
     align-items: center;
+    height: 400px
 }
 
-.user-input {
-    width: 550px;
-    height: 400px;
-}
-
-.submit-form {
-    width: 100%;
+.summarize {
     display: flex;
+    justify-content: center;
+}
+
+#user-text, #summary-text {
+    height: 100%;
 }
