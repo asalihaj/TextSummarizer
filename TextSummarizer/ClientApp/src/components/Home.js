@@ -1,12 +1,19 @@
 import React, { Component } from 'react';
+import axios from 'axios';
 import { Container, Form, FormGroup, Input, Button} from 'reactstrap';
 import './Home.css';
 
+const baseURL = `http://localhost:58851/api/`;
+
+
 export class Home extends Component {
     static displayName = Home.name;
-    summarize = () => {
-
+    summarize = async () => {
+        const text = document.querySelector("#user-text").value;
+        let summary = await axios.post(`${baseURL}summary`, { content: text});
+        document.querySelector("#summary-text").value = summary.data;
     }
+
   render () {
     return (
         <div className="">
@@ -31,6 +38,10 @@ export class Home extends Component {
                         <Button
                             type="submit"
                             color="primary"
+                            onClick={(event) => {
+                                event.preventDefault();
+                                this.summarize()
+                            }}
                         >
                             Summarize
                         </Button>

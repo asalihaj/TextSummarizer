@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
+using TextSummarizer.Models;
 
-namespace TextSummarizer.Models
+namespace TextSummarizer.Services
 {
     public class SentenceComparator : Comparer<Sentence>
     {

@@ -1,79 +1,50 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text.RegularExpressions;
+using System.Text;
+using TextSummarizer.Models;
 
-namespace TextSummarizer.Models.SummaryTools
+namespace TextSummarizer.Services
 {
     public class SummaryTool
     {
         private List<Sentence> sentences;
-        private List<Paragraph> paragraphs;
-        private Dictionary<Sentence, double> dictionary;
         private List<Sentence> summary;
-        private int numOfParagraphs;
         private int numOfSentences;
         private double[,] intersectionMatrix;
 
-        public List<Sentence> ExtractSentences (Text context)
+        public void init()
         {
-            char[] contextArray = context.Content.ToCharArray();
-            int nextChar = 0;
-            int prevChar = -1;
-            int j = 0;
-        
-            try
+            sentences = new List<Sentence>();
+            summary = new List<Sentence>();
+            numOfSentences = 0;
+        }
+
+        public void ExtractSentences (string context)
+        {
+            string[] contextParagraphs = context.Split("\n");
+            StringBuilder sentence = new StringBuilder();
+            for (int i = 0; i < contextParagraphs.Length; i++)
             {
-                for (int i = 0; i < contextArray.Length; i++)
+                for (int j = 0; j < contextParagraphs[i].Length; j++)
                 {
-                    nextChar = contextArray[i];
-                    char[] temp = new char[10000];
-                    while ((char)nextChar != '.')
+                    char temp = contextParagraphs[i][j];
+                    if (temp == '.' || temp == '!' || temp == '?')
                     {
-                        temp[j] = (char)nextChar;
-                        if((char)nextChar == '\n' && (char)prevChar == '\n')
-                        {
-                            numOfParagraphs++;
-                        }
-                        j++;
-                        prevChar = nextChar;
+                        sentence.Append(temp);
+                        sentences.Add(new Sentence(numOfSentences, sentence.ToString(), i));
+                        numOfSentences++;
+                        sentence = new StringBuilder();
                     }
-                    sentences.Add(new Sentence(numOfSentences, (new string(temp).Trim()), numOfParagraphs));
-                    numOfSentences++;
-                    prevChar = nextChar;
+                    else 
+                    {
+                        sentence.Append(temp);
+                    }
                 }
-            } catch (Exception e)
-            {
-                Console.WriteLine(e.Message);
             }
-            // List<Sentence> sentencesToReturn = new List<Sentence>();
-            // sentences.ForEach((item) =>
-            // {
-            //     sentencesToReturn.Add(new Sentence(item.Number, item.Value, item.ParagraphNumber));
-            // });
-            return sentences;
         }
 
-        public List<Paragraph> GroupSentencesIntoParagrapgs() 
-        {
-            int paragraphNumber = 0;
-            Paragraph paragraph = new Paragraph(0);
-
-            for (int i = 0; i < numOfSentences; i++)
-            {
-                if (sentences.ElementAt(i).ParagraphNumber != paragraphNumber)
-                {
-                    paragraphs.Add(paragraph);
-                    paragraphNumber++;
-                    paragraph = new Paragraph(paragraphNumber);
-                }
-                paragraph.Sentences.Add(sentences.ElementAt(i));
-            }
-            paragraphs.Add(paragraph);
-            return paragraphs;
-        }
-
-        public int NumberOfCommonWords(Sentence s1, Sentence s2)
+        private int NumberOfCommonWords(Sentence s1, Sentence s2)
         {
             int commonCount = 0;
             string[] s1Words = s1.Value.Split("\\s+");
@@ -120,25 +91,22 @@ namespace TextSummarizer.Models.SummaryTools
                 {
                     score += intersectionMatrix[i, j];
                 }
-                dictionary.Add(sentences.ElementAt(i), score);
-                ((Sentence)sentences.ElementAt(i)).Score = score;
+                sentences[i].Score = score;
             }
         }
 
         public List<Sentence> CreateSummary()
         {
-            for(int i = 0; i <= numOfParagraphs; i++)
-            {
-                int primarySet = paragraphs.ElementAt(i).Sentences.Count() / 5;
+            int primarySet = sentences.Count() / 2;
+            sentences.Sort(new SentenceComparator());
 
-                paragraphs.ElementAt(i).Sentences.Sort(new SentenceComparator());
-                for (int j = 0; j <= primarySet; j++)
-                {
-                    summary.Add(paragraphs.ElementAt(i).Sentences.ElementAt(j));
-                }
+            for (int j = 0; j <= primarySet; j++)
+            {
+                summary.Add(sentences[j]);
             }
             summary.Sort(new SentenceComparatorForSummary());
             return summary;
         }
+
     }
 }
