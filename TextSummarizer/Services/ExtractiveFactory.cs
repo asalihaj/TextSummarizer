@@ -11,7 +11,8 @@ namespace TextSummarizer.Services
         }
         public override string GetSummary()
         {
-            return new ExtractiveSummary().Summarize(content);
+            Summary summary = ExtractiveSummary.GetInstance();
+            return summary.Summarize(content);
         }
     }
 }

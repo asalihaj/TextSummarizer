@@ -6,9 +6,21 @@ namespace TextSummarizer.Services
 {
     public class ExtractiveSummary : Summary
     {
+        private static ExtractiveSummary instance;
+
+        private ExtractiveSummary() { }
+
+        public static ExtractiveSummary GetInstance()
+        {
+            if (instance == null)
+            {
+                instance = new ExtractiveSummary();
+            }
+            return instance;
+        }
         public override string Summarize(string content)
         {
-            SummaryTool tool = GetSummaryTool();
+            SummaryTool tool = SummaryTool.GetInstance();
             tool.ExtractSentences(content);
             tool.CreateIntersectionMatrix();
             tool.AssignScore();

@@ -4,6 +4,18 @@ namespace TextSummarizer.Services
 {
     public class AbstractiveSummary : Summary
     {
+        private static AbstractiveSummary instance;
+
+        private AbstractiveSummary() { }
+
+        public static AbstractiveSummary GetInstance()
+        {
+            if (instance == null)
+            {
+                instance = new AbstractiveSummary();
+            }
+            return instance;
+        }
         public override string Summarize(string content)
         {
             //TODO: Generate Abstractive Summarization

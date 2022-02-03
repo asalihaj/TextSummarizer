@@ -13,11 +13,37 @@ namespace TextSummarizer.Services
         private int numOfSentences;
         private double[,] intersectionMatrix;
 
-        public void init()
+        private static SummaryTool instance = null;
+
+        private SummaryTool() { }
+
+        public static SummaryTool GetInstance()
+        {
+            if (instance == null)
+            {
+                instance = new SummaryTool();
+                instance.Init();
+            }
+            else 
+            {
+                instance.Clear();
+            }
+            return instance;
+        }
+
+        public void Init()
         {
             sentences = new List<Sentence>();
             summary = new List<Sentence>();
             numOfSentences = 0;
+        }
+
+        private void Clear()
+        {
+            sentences.Clear();
+            summary.Clear();
+            numOfSentences = 0;
+            intersectionMatrix = null;
         }
 
         public void ExtractSentences (string context)

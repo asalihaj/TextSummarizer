@@ -34,6 +34,36 @@ export class Home extends Component {
                             placeholder="Summarized text appears here..."
                             disabled
                         />
+                        
+                    </FormGroup>
+                    <FormGroup className="control-buttons">
+                        <Button
+                            type="submit"
+                            color="primary"
+                            size="sm"
+                            outline
+                            id="copy"
+                            onClick={(event) => {
+                                event.preventDefault();
+                                const copyText = document.querySelector("#summary-text");
+                                navigator.clipboard.writeText(copyText.value);
+                                alert("Summary copied to clipboard");
+                            }}
+                        >
+                            Copy
+                        </Button>
+                        <Button
+                            type="submit"
+                            id="clear"
+                            color="primary"
+                            size="sm"
+                            onClick={(event) => {
+                                event.preventDefault();
+                                document.querySelector("#summary-text").value = "";
+                            }}
+                        >
+                            Clear
+                        </Button>
                     </FormGroup>
                     <FormGroup className="summarize">
                         <Button
