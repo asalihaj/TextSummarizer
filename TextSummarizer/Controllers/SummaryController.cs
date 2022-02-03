@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
+using System;
 using System.Collections.Generic;
 using TextSummarizer.Models;
 using TextSummarizer.Services;
@@ -11,9 +12,17 @@ namespace TextSummarizer.Controllers
     {
 
         [HttpPost]
-        public JsonResult Get(Text text)
+        public JsonResult Summary(Text text)
         {
-            string result = Summary.Summarize(text.Content);
+            SummaryFactory summary = null;
+            if(text.Type.ToLower().Equals("extractive"))
+            {
+                summary = new ExtractiveFactory(text);
+            } else if (text.Type.ToLower().Equals("abstractive"))
+            {
+                summary = new AbstractiveFactory(text);
+            }
+            string result = summary.GetSummary();
             return new JsonResult(result);
         }
     }

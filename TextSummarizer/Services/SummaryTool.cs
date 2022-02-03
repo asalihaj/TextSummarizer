@@ -82,7 +82,7 @@ namespace TextSummarizer.Services
             }
         }
 
-        public void CreateDictionary()
+        public void AssignScore()
         {
             for (int i = 0; i < numOfSentences; i++)
             {

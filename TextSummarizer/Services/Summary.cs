@@ -4,23 +4,21 @@ using System.Text;
 using TextSummarizer.Models;
 namespace TextSummarizer.Services
 {
-    public class Summary
+    public abstract class Summary
     {
-        public static string Summarize(string context)
+        private SummaryTool tool;
+
+        public Summary ()
         {
-            SummaryTool summaryTool = new();
-            summaryTool.init();
-            summaryTool.ExtractSentences(context);
-            summaryTool.CreateIntersectionMatrix();
-            summaryTool.CreateDictionary();
-            List<Sentence> result = summaryTool.CreateSummary();
-            StringBuilder summary = new StringBuilder();
-            foreach (Sentence sentence in result)
-            {
-                summary.Append(sentence.Value);
-                summary.Append(' ');
-            }
-            return summary.ToString();
+            tool = new SummaryTool();
+            tool.init();
         }
+
+        protected SummaryTool GetSummaryTool()
+        {
+            return tool;
+        }
+
+        public abstract string Summarize(string content);
     }
 }

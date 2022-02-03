@@ -10,7 +10,8 @@ export class Home extends Component {
     static displayName = Home.name;
     summarize = async () => {
         const text = document.querySelector("#user-text").value;
-        let summary = await axios.post(`${baseURL}summary`, { content: text});
+        const data = { text: text, type: "extractive" };
+        let summary = await axios.post(`${baseURL}summary`, { content: text, type: "extractive"});
         document.querySelector("#summary-text").value = summary.data;
     }
 
