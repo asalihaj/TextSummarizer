@@ -1,4 +1,4 @@
-namespace TextSummarizer.Services
+namespace TextSummarizer.Services.Summarization
 {
     public abstract class Summary
     {

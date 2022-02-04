@@ -1,6 +1,7 @@
 using TextSummarizer.Models;
+using TextSummarizer.Services.Summarization;
 
-namespace TextSummarizer.Services
+namespace TextSummarizer.Services.SummaryFactories
 {
     public class ExtractiveFactory : SummaryFactory
     {

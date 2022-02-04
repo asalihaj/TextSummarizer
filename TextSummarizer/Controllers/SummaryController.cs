@@ -1,8 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
-using System;
-using System.Collections.Generic;
 using TextSummarizer.Models;
 using TextSummarizer.Services;
+using TextSummarizer.Services.SummaryFactories;
 
 namespace TextSummarizer.Controllers
 {

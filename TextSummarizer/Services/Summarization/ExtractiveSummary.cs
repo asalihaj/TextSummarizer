@@ -2,11 +2,11 @@ using System.Collections.Generic;
 using System.Text;
 using TextSummarizer.Models;
 
-namespace TextSummarizer.Services
+namespace TextSummarizer.Services.Summarization
 {
     public class ExtractiveSummary : Summary
     {
-        private static ExtractiveSummary instance;
+        private static ExtractiveSummary instance = null;
 
         private ExtractiveSummary() { }
 

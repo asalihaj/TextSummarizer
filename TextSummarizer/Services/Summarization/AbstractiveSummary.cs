@@ -1,6 +1,6 @@
 using TextSummarizer.Models;
 
-namespace TextSummarizer.Services
+namespace TextSummarizer.Services.Summarization
 {
     public class AbstractiveSummary : Summary
     {
